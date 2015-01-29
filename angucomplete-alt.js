@@ -96,7 +96,8 @@
         inputChanged: '=',
         autoMatch: '@',
         focusOut: '&',
-        focusIn: '&'
+        focusIn: '&',
+        httpHeaders: '@'
       },
       templateUrl: function(element, attrs) {
         return attrs.templateUrl || TEMPLATE_URL;
@@ -428,6 +429,9 @@
           cancelHttpRequest();
           httpCanceller = $q.defer();
           params.timeout = httpCanceller.promise;
+          if (scope.httpHeaders) {
+            params.headers = httpHeaders;
+          }
           $http.get(url, params)
             .success(httpSuccessCallbackGen(str))
             .error(httpErrorCallback);
