@@ -420,19 +420,25 @@
         }
 
         function getRemoteResults(str) {
-          var params = {},
-              url = scope.remoteUrl + str;
+          var url = scope.remoteUrl + str,
+              params = {
+                url: url
+              };
           if (scope.remoteUrlRequestFormatter) {
-            params = {params: scope.remoteUrlRequestFormatter(str)};
-            url = scope.remoteUrl;
+            params = {
+              params: scope.remoteUrlRequestFormatter(str),
+              url: scope.remoteUrl
+            };
           }
+          params.method = 'GET';
           cancelHttpRequest();
           httpCanceller = $q.defer();
           params.timeout = httpCanceller.promise;
           if (scope.httpHeaders) {
-            params.headers = scope.httpHeaders;
+            params.headers = JSON.parse(scope.httpHeaders);
+            params.withCredentials = true;
           }
-          $http.get(url, params)
+          $http(params)
             .success(httpSuccessCallbackGen(str))
             .error(httpErrorCallback);
         }
