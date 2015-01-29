@@ -430,7 +430,7 @@
           httpCanceller = $q.defer();
           params.timeout = httpCanceller.promise;
           if (scope.httpHeaders) {
-            params.headers = httpHeaders;
+            params.headers = scope.httpHeaders;
           }
           $http.get(url, params)
             .success(httpSuccessCallbackGen(str))
